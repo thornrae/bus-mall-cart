@@ -3,6 +3,7 @@
 'use strict';
 
 // Set up an empty cart for use on this page.
+//this connects the pages, now var cart has access to everything in app.js
 var cart = new Cart([]);
 
 // On screen load, we call this method to put all of the busmall options
@@ -12,7 +13,15 @@ function populateForm() {
   //TODO: Add an <option> tag inside the form's select for each product
   var selectElement = document.getElementById('items');
   for (var i in Product.allProducts) {
-
+     // create element
+     var optionEl = document.createElement('option');
+     // give it text content
+     optionEl.textContent = Product.allProducts[i].name;
+     // assign a value to its value attribute
+     optionEl.value = Product.allProducts[i].name; 
+     // optionEl.value = Product.allProducts[i].name.toLowerCase(); //not sure it should be lower case
+     // append to the DOM
+     selectElement.appendChild(optionEl);
   }
 
 }
@@ -21,11 +30,11 @@ function populateForm() {
 // object, save the whole thing back to local storage and update the screen
 // so that it shows the # of items in the cart and a quick preview of the cart itself.
 function handleSubmit(event) {
-
+  event.preventDefault();
   // TODO: Prevent the page from reloading
 
   // Do all the things ...
-  addSelectedItemToCart();
+  addSelectedItemToCart(event);
   cart.saveToLocalStorage();
   updateCounter();
   updateCartPreview();
@@ -33,10 +42,18 @@ function handleSubmit(event) {
 }
 
 // TODO: Add the selected item and quantity to the cart
-function addSelectedItemToCart() {
+function addSelectedItemToCart(event) {
   // TODO: suss out the item picked from the select list
+  var item = event.target.item.value;
+  console.log(item);
   // TODO: get the quantity
+  var quantity = event.target.num.value;
+  console.log(quantity);
   // TODO: using those, add one item to the Cart
+
+  cart.addItem(item);
+
+
 }
 
 // TODO: Update the cart count in the header nav with the number of items in the Cart
